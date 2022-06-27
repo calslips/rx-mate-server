@@ -1,4 +1,5 @@
 require('dotenv').config();
+const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
@@ -16,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post('/registration', (req, res) => {
   const newUser = new User({
     username: req.body.username,
-    password: req.body.password,
+    password: bcrypt.hashSync(req.body.password, 10),
   });
 
   newUser.save(err => {
