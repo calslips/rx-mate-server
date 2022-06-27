@@ -1,8 +1,12 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const app = express();
+
+mongoose.connect(process.env.DB_CONNECTION_STRING);
 
 app.use(cors());
 app.use(express.json());
