@@ -33,6 +33,35 @@ app.post('/registration', (req, res) => {
   });
 });
 
+app.post('/login', (req, res) => {
+  User.findOne({ username: req.body.username }, (err, user) => {
+    if (err) {
+      return res.status(500).json({
+        title: 'server error',
+        error: err,
+      });
+    }
+    if (!user)  {
+      return res.status(400).json({
+        title: 'user not found',
+        error: 'Invalid username',
+      });
+    }
+    if (!bcrypt.compareSync(req.body.password, user.password)) {
+      return res.status(401).json({
+        title: 'unable to login',
+        error: 'Invalid password',
+      });
+    }
+
+    const token = jwt.sign({ userId: user._id }, 'secretOrPrivateKey');
+    return res.status(200).json({
+      title: 'Login successful',
+      token: token,
+    });
+  });
+});
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, (err) => {
