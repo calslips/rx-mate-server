@@ -62,6 +62,26 @@ app.post('/login', (req, res) => {
   });
 });
 
+app.get('/user', (req, res) => {
+  const token = req.headers.token;
+  // verify token
+  jwt.verify(token, 'secretOrPrivateKey', (err, decoded) => {
+    if (err) return res.status(401).json({
+      title: 'unauthorized',
+    });
+    // token validated
+    User.findOne({ _id: decoded.userId }, (err, user) => {
+      if (err) return console.error(err);
+      return res.status(200).json({
+        title: 'success',
+        user: {
+          username: user.username,
+        }
+      });
+    });
+  });
+});
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, (err) => {
