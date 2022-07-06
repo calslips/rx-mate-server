@@ -6,6 +6,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const Medication = require('./models/Medication');
 const app = express();
 
 mongoose.connect(process.env.DB_CONNECTION_STRING);
@@ -77,6 +78,80 @@ app.get('/user', (req, res) => {
         user: {
           username: user.username,
         }
+      });
+    });
+  });
+});
+
+// implement medication route to GET all user meds
+app.get('/medications', (req, res) => {
+  const token = req.headers.token;
+  // verify token
+  jwt.verify(token, 'secretOrPrivateKey', (err, decoded) => {
+    if (err) return res.status(401).json({
+      title: 'unauthorized',
+    });
+
+    // token validated
+    Medication.find({ user: decoded.userId }, (err, medications) => {
+      if (err) return console.error(err);
+      return res.status(200).json({
+        title: 'success',
+        medications,
+      });
+    });
+  })
+});
+
+// implement medication route to POST a new med
+app.post('/medication', (req, res) => {
+  const token = req.headers.token;
+  // verify token
+  jwt.verify(token, 'secretOrPrivateKey', (err, decoded) => {
+    if (err) return res.status(401).json({
+      title: 'unauthorized',
+    });
+
+    // token validated
+    let newMed = new Medication({
+      name: req.body.name,
+      administered: false,
+      user: decoded.userId,
+    });
+
+    newMed.save(err => {
+      if (err) return console.error(err);
+      return res.status(200).json({
+        title: 'Medication successfully added',
+        medication: newMed,
+      });
+    })
+  })
+});
+
+// mark medication as taken PUT
+app.put('/medication/:medId', (req, res) => {
+  const token = req.headers.token;
+  const medId = req.params.medId;
+  // verify token
+  jwt.verify(token, 'secretOrPrivateKey', (err, decoded) => {
+    if (err) return res.status(401).json({
+      title: 'unauthorized',
+    });
+
+    // token validated
+    Medication.findOne({ user: decoded.userId, _id: medId }, (err, medication) => {
+      if (err) return console.error(err);
+      // correct medication found
+      medication.administered = !medication.administered;
+      // successful medication update
+      medication.save(err => {
+        if (err) return console.error(err);
+        // updates successfully saved
+        return res.status(200).json({
+          title: 'Medication successfully updated',
+          medication,
+        });
       });
     });
   });
