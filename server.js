@@ -25,7 +25,7 @@ app.post('/registration', (req, res) => {
     if (err) {
       return res.status(400).json({
         title: 'error',
-        error: 'Email already in use',
+        error: 'Username already in use',
       });
     }
     return res.status(200).json({
@@ -55,7 +55,7 @@ app.post('/login', (req, res) => {
       });
     }
 
-    const token = jwt.sign({ userId: user._id }, 'secretOrPrivateKey');
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET);
     return res.status(200).json({
       title: 'Login successful',
       token: token,
@@ -63,10 +63,21 @@ app.post('/login', (req, res) => {
   });
 });
 
+// if we wanted to implement token verification as middleware
+// but for now we make use of the decoded token
+// const verifyToken = (req, res, next) => {
+//   jwt.verify(token, process.env.SECRET, (err, decoded) => {
+//     if (err) return res.status(401).json({
+//       title: 'unauthorized'
+//     });
+//   });
+//   next();
+// };
+
 app.get('/user', (req, res) => {
   const token = req.headers.token;
   // verify token
-  jwt.verify(token, 'secretOrPrivateKey', (err, decoded) => {
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
     if (err) return res.status(401).json({
       title: 'unauthorized',
     });
@@ -87,7 +98,7 @@ app.get('/user', (req, res) => {
 app.get('/medications', (req, res) => {
   const token = req.headers.token;
   // verify token
-  jwt.verify(token, 'secretOrPrivateKey', (err, decoded) => {
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
     if (err) return res.status(401).json({
       title: 'unauthorized',
     });
@@ -107,7 +118,7 @@ app.get('/medications', (req, res) => {
 app.post('/medication', (req, res) => {
   const token = req.headers.token;
   // verify token
-  jwt.verify(token, 'secretOrPrivateKey', (err, decoded) => {
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
     if (err) return res.status(401).json({
       title: 'unauthorized',
     });
@@ -134,7 +145,7 @@ app.put('/medication/:medId', (req, res) => {
   const token = req.headers.token;
   const medId = req.params.medId;
   // verify token
-  jwt.verify(token, 'secretOrPrivateKey', (err, decoded) => {
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
     if (err) return res.status(401).json({
       title: 'unauthorized',
     });
