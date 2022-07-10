@@ -168,6 +168,27 @@ app.put('/medication/:medId', (req, res) => {
   });
 });
 
+// remove medication from list DELETE
+app.delete('/medication/:medId', (req, res) => {
+  const token = req.headers.token;
+  const medId = req.params.medId;
+  // verify token
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    if (err) return res.status(401).json({
+      title: 'unauthorized',
+    });
+
+    // token validated
+    Medication.findOneAndDelete({ user: decoded.userId, _id: medId }, (err) => {
+      if (err) return console.error(err);
+      // correct medication deleted
+      return res.status(204).json({
+        title: 'Medication successfully deleted',
+      });
+    });
+  });
+});
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, (err) => {
