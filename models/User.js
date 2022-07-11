@@ -1,3 +1,4 @@
+const Medication = require('./Medication').schema;
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -6,6 +7,9 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   password: String,
+  medications: {
+    type: [Medication],
+  },
 });
 
 const User = mongoose.model('User', userSchema);
