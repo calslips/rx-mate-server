@@ -88,30 +88,11 @@ app.get('/user', (req, res) => {
         title: 'success',
         user: {
           username: user.username,
+          medications: user.medications,
         }
       });
     });
   });
-});
-
-// implement medication route to GET all user meds
-app.get('/medications', (req, res) => {
-  const token = req.headers.token;
-  // verify token
-  jwt.verify(token, process.env.SECRET, (err, decoded) => {
-    if (err) return res.status(401).json({
-      title: 'unauthorized',
-    });
-
-    // token validated
-    Medication.find({ user: decoded.userId }, (err, medications) => {
-      if (err) return console.error(err);
-      return res.status(200).json({
-        title: 'success',
-        medications,
-      });
-    });
-  })
 });
 
 // implement route to add new med to user's meds list
