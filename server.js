@@ -172,11 +172,17 @@ app.delete('/medication/:medId', (req, res) => {
     });
 
     // token validated
-    Medication.findOneAndDelete({ user: decoded.userId, _id: medId }, (err) => {
+    User.findOne({ _id: decoded.userId/*, _id: medId*/ }, (err, user) => {
       if (err) return console.error(err);
+      // correct user found
+      user.medications = user.medications.filter(m => m._id.toString() !== medId);
       // correct medication deleted
-      return res.status(204).json({
-        title: 'Medication successfully deleted',
+      user.save(err => {
+        if (err) return console.error(err);
+        // deletion successfully saved
+        return res.status(204).json({
+          title: 'Medication successfully deleted',
+        });
       });
     });
   });
