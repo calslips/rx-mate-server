@@ -141,17 +141,20 @@ app.put('/medication/:medId', (req, res) => {
     });
 
     // token validated
-    Medication.findOne({ user: decoded.userId, _id: medId }, (err, medication) => {
+    User.findOne({ _id: decoded.userId }, (err, user) => {
       if (err) return console.error(err);
-      // correct medication found
-      medication.administered = !medication.administered;
+      // correct user found
+      user.medications = user.medications.map(m => {
+        if (m._id.toString() === medId) m.administered = !m.administered;
+        return m;
+      });
       // successful medication update
-      medication.save(err => {
+      user.save(err => {
         if (err) return console.error(err);
         // updates successfully saved
         return res.status(200).json({
           title: 'Medication successfully updated',
-          medication,
+          medications: user.medications,
         });
       });
     });
