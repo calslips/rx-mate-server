@@ -109,6 +109,11 @@ app.post('/medication', (req, res) => {
     const newMed = new Medication({
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
+      type: req.body.type,
+      dose: req.body.dose,
+      amount: req.body.amount,
+      days: req.body.days,
+      times: req.body.times,
       administered: false,
       user: decoded.userId,
     });
@@ -172,7 +177,7 @@ app.delete('/medication/:medId', (req, res) => {
     });
 
     // token validated
-    User.findOne({ _id: decoded.userId/*, _id: medId*/ }, (err, user) => {
+    User.findOne({ _id: decoded.userId }, (err, user) => {
       if (err) return console.error(err);
       // correct user found
       user.medications = user.medications.filter(m => m._id.toString() !== medId);
