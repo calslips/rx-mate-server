@@ -6,9 +6,10 @@ const medicationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  count: Number,
   type: String,
   dose: String,
-  amount: {
+  timesPerDay: {
     type: Number,
     required: true,
   },

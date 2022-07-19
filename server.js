@@ -109,9 +109,10 @@ app.post('/medication', (req, res) => {
     const newMed = new Medication({
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
+      count: req.body.count,
       type: req.body.type,
       dose: req.body.dose,
-      amount: req.body.amount,
+      timesPerDay: req.body.timesPerDay,
       days: req.body.days,
       times: req.body.times,
       administered: false,
