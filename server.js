@@ -106,7 +106,7 @@ app.post('/medication', (req, res) => {
 
     // token validated
     // create new med using data from req & token
-    const newMed = new Medication({
+    const newMeds = Array.from({length: req.body.timesPerDay}, (_, i) => new Medication({
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
       count: req.body.count,
@@ -114,22 +114,24 @@ app.post('/medication', (req, res) => {
       dose: req.body.dose,
       timesPerDay: req.body.timesPerDay,
       days: req.body.days,
-      times: req.body.times,
+      time: req.body.times[i],
       administered: false,
       user: decoded.userId,
-    });
+    }))
 
     User.findOne({ _id: decoded.userId }, (err, user) => {
       if (err) return console.error(err);
       // add new med to user's current list of meds
-      user.medications = user.medications.concat(newMed);
+      user.medications = user.medications
+        .concat(...newMeds)
+        .sort((a, b) => +a.time.split(':').join('') - +b.time.split(':').join(''));
       // save modification to db
       user.save(err => {
         if (err) console.error(err);
         // med successfully saved
         return res.status(200).json({
           title: 'Medication successfully added',
-          medication: newMed,
+          medications: newMeds,
         });
       });
     });

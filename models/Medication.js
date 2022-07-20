@@ -14,10 +14,7 @@ const medicationSchema = new mongoose.Schema({
     required: true,
   },
   days: [String],
-  times: {
-    type: [String],
-    required: true,
-  },
+  time: String,
   administered: {
     type: Boolean,
     required: true,
