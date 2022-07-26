@@ -13,6 +13,7 @@ mongoose.connect(process.env.DB_CONNECTION_STRING);
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('build'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/registration', (req, res) => {
