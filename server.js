@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const Medication = require('./models/Medication');
 const app = express();
+const path = require('path');
 
 mongoose.connect(process.env.DB_CONNECTION_STRING);
 
@@ -15,6 +16,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('build'));
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/build/index.html'))
+});
 
 app.post('/registration', (req, res) => {
   const newUser = new User({
