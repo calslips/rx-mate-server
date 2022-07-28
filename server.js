@@ -14,6 +14,7 @@ mongoose.connect(process.env.DB_CONNECTION_STRING);
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('build'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/registration', (req, res) => {
@@ -196,12 +197,6 @@ app.delete('/medication/:medId', (req, res) => {
     });
   });
 });
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/build/index.html'))
-});
-
-app.use(express.static('build'));
 
 const PORT = process.env.PORT || 8000;
 
