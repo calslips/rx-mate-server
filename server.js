@@ -17,9 +17,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get(['/dashboard', '/profile'], (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.get(['/dashboard', '/profile'], (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 app.post('/registration', (req, res) => {
   const newUser = new User({
@@ -202,9 +202,9 @@ app.delete('/medication/:medId', (req, res) => {
   });
 });
 
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const PORT = process.env.PORT || 8000;
 
