@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const Medication = require('./models/Medication');
 const app = express();
-// const path = require('path');
+const path = require('path');
 
 mongoose.connect(process.env.DB_CONNECTION_STRING);
 
