@@ -8,13 +8,14 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const Medication = require('./models/Medication');
 const app = express();
-const path = require('path');
+// const path = require('path');
 
 mongoose.connect(process.env.DB_CONNECTION_STRING);
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static('build'));
+// app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // app.get(['/dashboard', '/profile'], (req, res) => {
@@ -202,9 +203,9 @@ app.delete('/medication/:medId', (req, res) => {
   });
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 const PORT = process.env.PORT || 8000;
 
