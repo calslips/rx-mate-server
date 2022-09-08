@@ -15,14 +15,14 @@ mongoose.connect(process.env.DB_CONNECTION_STRING);
       const listOfDueMeds = user.medications.filter(med =>
         med.days.includes(
           new Date()
-            .toLocaleDateString('en-US', { weekday: 'long' })
+            .toLocaleDateString('en-US', { weekday: 'long' , timeZone: 'America/New_York'})
             .toLowerCase()
         )
       );
       if (listOfDueMeds.length) {
         const newHistory = new History({
           _id: new mongoose.Types.ObjectId(),
-          dateDue: new Date().toLocaleDateString('en-US'),
+          dateDue: new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York' }),
           medsDue: listOfDueMeds,
           user: user._id,
         });
