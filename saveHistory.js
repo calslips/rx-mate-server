@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 const mongoose = require('mongoose');
-const History = require('../models/History');
-const User = require('../models/User');
+const History = require('./models/History');
+const User = require('./models/User');
 
 // saveMedsToHistory
 (async () => {
