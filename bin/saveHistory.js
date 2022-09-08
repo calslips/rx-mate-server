@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const History = require('../models/History');
 const User = require('../models/User');
 
-const saveMedsToHistory = async () => {
+// saveMedsToHistory
+(async () => {
   try {
     const users = await User.find({});
     users.forEach(user => {
@@ -38,4 +39,4 @@ const saveMedsToHistory = async () => {
   } catch (err) {
     console.error(err);
   }
-};
+})();
