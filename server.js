@@ -91,6 +91,7 @@ app.get('/user', (req, res) => {
         user: {
           username: user.username,
           medications: user.medications,
+          history: user.history,
         }
       });
     });
