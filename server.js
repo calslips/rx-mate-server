@@ -7,8 +7,10 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Medication = require('./models/Medication');
+const Subscription = require('./models/Subscription');
 const app = express();
 const path = require('path');
+const webPush = require('web-push');
 
 mongoose.connect(process.env.DB_CONNECTION_STRING);
 
@@ -195,6 +197,22 @@ app.delete('/medication/:medId', (req, res) => {
           title: 'Medication successfully deleted',
         });
       });
+    });
+  });
+});
+
+app.post('/subscribe', (req, res) => {
+  const subscription = new Subscription({...req.body});
+
+  subscription.save(err => {
+    if (err) {
+      return res.status(500).json({
+        title: 'server error',
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      title: 'Subscribed successfully',
     });
   });
 });
