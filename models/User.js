@@ -1,5 +1,6 @@
 const History = require('./History').schema;
 const Medication = require('./Medication').schema;
+const Subsciption = require('./Subscription').schema;
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -13,7 +14,8 @@ const userSchema = new mongoose.Schema({
   },
   history: {
     type: [History],
-  }
+  },
+  subscription: Subsciption,
 });
 
 const User = mongoose.model('User', userSchema);
