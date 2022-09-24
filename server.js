@@ -9,7 +9,6 @@ const Medication = require('./models/Medication');
 const Subscription = require('./models/Subscription');
 const app = express();
 const path = require('path');
-const webPush = require('web-push');
 
 mongoose.connect(process.env.DB_CONNECTION_STRING);
 
@@ -200,18 +199,29 @@ app.delete('/medication/:medId', (req, res) => {
   });
 });
 
-app.post('/subscribe', (req, res) => {
-  const subscription = new Subscription({...req.body});
+app.post('/subscribe', async (req, res) => {
+  const token = req.headers.token;
+  const subscription = new Subscription({ ...req.body });
 
-  subscription.save(err => {
-    if (err) {
-      return res.status(500).json({
-        title: 'server error',
-        error: err,
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    if (err) res.status(401).json({
+      title: 'unauthorized',
+    });
+
+    // token validated
+    User.findOne({ _id: decoded.userId }, (err, user) => {
+      if (err) return console.error(err);
+      // add new service worker subscription data to user
+      user.subscription = subscription;
+      // save modification to db
+      user.save(err => {
+        if (err) console.error(err);
+        // subscription successfully saved
+        return res.status(200).json({
+          title: 'Subscription successfully added',
+          subscription,
+        });
       });
-    }
-    return res.status(200).json({
-      title: 'Subscribed successfully',
     });
   });
 });
