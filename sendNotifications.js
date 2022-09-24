@@ -20,7 +20,9 @@ mongoose.connect(process.env.DB_CONNECTION_STRING);
     const users = await User.find({});
     users.forEach(user => {
       const medsDueTodayWithinTheHour = user.medications.filter(med => {
-        const timeDifference = (new Date() - new Date(`${new Date().toLocaleDateString()} ${med.time}`)) / 3600000;
+        const currentTime = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const dueTime = new Date(`${new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York' })} ${med.time}`);
+        const timeDifference = (currentTime - dueTime) / 3600000;
         return med.days.includes(
           new Date()
             .toLocaleDateString('en-US', { weekday: 'long' , timeZone: 'America/New_York'})
