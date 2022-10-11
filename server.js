@@ -92,6 +92,7 @@ app.get('/user', (req, res) => {
           username: user.username,
           medications: user.medications,
           history: user.history,
+          swRegistered: user.swRegistered,
         }
       });
     });
@@ -220,6 +221,69 @@ app.post('/subscribe', async (req, res) => {
         return res.status(200).json({
           title: 'Subscription successfully added',
           subscription,
+        });
+      });
+    });
+  });
+});
+
+app.delete('/subscribe', async (req, res) => {
+  const token = req.headers.token;
+
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    if (err) res.status(401).json({
+      title: 'unauthorized',
+    });
+
+    User.findOne({ _id: decoded.userId }, (err, user) => {
+      if (err) return console.error(err);
+      user.subscription = null;
+      user.save(err => {
+        if (err) return console.error(err);
+        return res.status(204).json({
+          title: 'Service worker subscription successfully removed',
+        });
+      });
+    });
+  });
+});
+
+app.post('/swRegistration', async (req, res) => {
+  const token = req.headers.token;
+
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    if (err) res.status(401).json({
+      title: 'unauthorized',
+    });
+
+    User.findOne({ _id: decoded.userId }, (err, user) => {
+      if (err) return console.error(err);
+      user.swRegistered = true;
+      user.save(err => {
+        if (err) return console.error(err);
+        return res.status(200).json({
+          title: 'Registration successfully added',
+        });
+      });
+    });
+  });
+});
+
+app.delete('/swRegistration', async (req, res) => {
+  const token = req.headers.token;
+
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    if (err) res.status(401).json({
+      title: 'unauthorized',
+    });
+
+    User.findOne({ _id: decoded.userId }, (err, user) => {
+      if (err) return console.error(err);
+      user.swRegistered = false;
+      user.save(err => {
+        if (err) return console.error(err);
+        return res.status(204).json({
+          title: 'Service worker subscription successfully removed',
         });
       });
     });
