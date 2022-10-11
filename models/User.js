@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     type: [History],
   },
   subscription: Subsciption,
+  swRegistered: Boolean,
 });
 
 const User = mongoose.model('User', userSchema);
