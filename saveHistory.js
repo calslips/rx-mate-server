@@ -1,11 +1,6 @@
-#!/usr/bin/env node
-
-require('dotenv').config();
 const mongoose = require('mongoose');
 const History = require('./models/History');
 const User = require('./models/User');
-
-mongoose.connect(process.env.DB_CONNECTION_STRING);
 
 // saveMedsToHistory
 module.exports = async () => {

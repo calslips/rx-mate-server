@@ -1,11 +1,5 @@
-#!/usr/bin/env node
-
-require('dotenv').config();
 const webPush = require('web-push');
-const mongoose = require('mongoose');
 const User = require('./models/User');
-
-mongoose.connect(process.env.DB_CONNECTION_STRING);
 
 // sendNotificationsToClient
 module.exports = async () => {
