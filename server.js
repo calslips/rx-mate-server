@@ -11,8 +11,17 @@ const saveHistory = require('./saveHistory');
 const sendNotifications = require('./sendNotifications');
 const app = express();
 const path = require('path');
+const PORT = process.env.PORT || 8000;
 
-mongoose.connect(process.env.DB_CONNECTION_STRING);
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.DB_CONNECTION_STRING);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
 
 app.use(cors());
 app.use(express.json());
@@ -318,9 +327,9 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-const PORT = process.env.PORT || 8000;
-
-app.listen(PORT, (err) => {
-  if (err) return console.error(err);
-  console.log(`Server running on port: ${PORT}`);
-});
+connectDB().then(() => {
+  app.listen(PORT, (err) => {
+    if (err) return console.error(err);
+    console.log(`Server running on port: ${PORT}`);
+  })
+})
