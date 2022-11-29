@@ -8,7 +8,7 @@ const User = require('./models/User');
 mongoose.connect(process.env.DB_CONNECTION_STRING);
 
 // saveMedsToHistory
-(async () => {
+module.exports = async () => {
   try {
     const users = await User.find({});
     users.forEach(user => {
@@ -42,4 +42,4 @@ mongoose.connect(process.env.DB_CONNECTION_STRING);
   } catch (err) {
     console.error(err);
   }
-})();
+};

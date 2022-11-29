@@ -8,7 +8,7 @@ const User = require('./models/User');
 mongoose.connect(process.env.DB_CONNECTION_STRING);
 
 // sendNotificationsToClient
-(async () => {
+module.exports = async () => {
   const options = {
     vapidDetails: {
       subject: `mailto:${process.env.MY_EMAIL}`,
@@ -46,4 +46,4 @@ mongoose.connect(process.env.DB_CONNECTION_STRING);
   } catch (err) {
     console.error(err);
   }
-})();
+};

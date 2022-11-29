@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const Medication = require('./models/Medication');
 const Subscription = require('./models/Subscription');
+const saveHistory = require('./saveHistory');
+const sendNotifications = require('./sendNotifications');
 const app = express();
 const path = require('path');
 
@@ -288,6 +290,28 @@ app.delete('/swRegistration', async (req, res) => {
       });
     });
   });
+});
+
+app.get('/admin/sendNotifications', async (req, res) => {
+  try {
+    await sendNotifications();
+    res.status(200).json({
+      title: 'Medication notifications successfully sent'
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.post('/admin/saveHistory', async (req, res) => {
+  try {
+    await saveHistory();
+    res.status(200).json({
+      title: 'Medication history successfully updated'
+    });
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 app.get('/*', (req, res) => {
