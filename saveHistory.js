@@ -34,6 +34,7 @@ module.exports = async () => {
         });
       }
     });
+    return 'Medication history successfully updated'
   } catch (err) {
     console.error(err);
   }

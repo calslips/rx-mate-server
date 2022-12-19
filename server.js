@@ -303,9 +303,9 @@ app.delete('/swRegistration', async (req, res) => {
 
 app.get('/admin/sendNotifications', async (req, res) => {
   try {
-    await sendNotifications();
+    const notificationStatus = await sendNotifications();
     res.status(200).json({
-      title: 'Medication notifications successfully sent'
+      title: notificationStatus
     });
   } catch (err) {
     console.error(err);
@@ -314,9 +314,9 @@ app.get('/admin/sendNotifications', async (req, res) => {
 
 app.post('/admin/saveHistory', async (req, res) => {
   try {
-    await saveHistory();
+    const historyStatus = await saveHistory();
     res.status(200).json({
-      title: 'Medication history successfully updated'
+      title: historyStatus
     });
   } catch (err) {
     console.error(err);

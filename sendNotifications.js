@@ -37,6 +37,7 @@ module.exports = async () => {
         });
       }
     });
+    return 'Medication notifications successfully sent';
   } catch (err) {
     console.error(err);
   }
