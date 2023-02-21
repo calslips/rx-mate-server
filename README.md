@@ -1,10 +1,10 @@
 # RxMate
 A web application to help you remember when to take your medications! Users can create accounts, log in, add and remove medications, mark medications as taken for the day, and check their medication intake history.
 
-**Link to project:** **[RxMate](https://rxmate.herokuapp.com/)**
+**Link to project:** **[RxMate](https://rxmate.cyclic.app/)**
 
 <p align="center">
-  <a target="_blank" href="https://rxmate.herokuapp.com/">
+  <a target="_blank" href="https://rxmate.cyclic.app/">
     <img src="https://i.ibb.co/PYhr36Q/rx-Mate-Thumbnail.jpg" width="50%" alt="Rx Mate web application login page."/>
   </a>
 </p>
